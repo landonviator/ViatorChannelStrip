@@ -27,6 +27,9 @@ public:
 private:
     
     juce::GroupComponent group1, group2, group3, group4, group5, group6;
+    std::vector<juce::GroupComponent*> groups = {
+        &group1, &group2, &group3, &group4, &group5, &group6
+      };
     
     ViatorChannelStripAudioProcessor& audioProcessor;
 

@@ -13,36 +13,20 @@
 ViatorChannelStripAudioProcessorEditor::ViatorChannelStripAudioProcessorEditor (ViatorChannelStripAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    groups.reserve(6);
     
-    addAndMakeVisible(group1);
+    for (int i = 0; i < groups.size(); i++) {
+        addAndMakeVisible(groups[i]);
+        groups[i]->setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
+        groups[i]->setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
+    }
+    
     group1.setText("Saturation");
-    group1.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group1.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    
-    addAndMakeVisible(group2);
     group2.setText("Surgery");
-    group2.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group2.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    
-    addAndMakeVisible(group3);
     group3.setText("VCA");
-    group3.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group3.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    
-    addAndMakeVisible(group4);
     group4.setText("Color");
-    group4.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group4.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    
-    addAndMakeVisible(group5);
     group5.setText("Something");
-    group5.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group5.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    
-    addAndMakeVisible(group6);
     group6.setText("Something Again");
-    group6.setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
-    group6.setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
     
     //Making the window resizable by aspect ratio and setting size
     AudioProcessorEditor::setResizable(true, true);
