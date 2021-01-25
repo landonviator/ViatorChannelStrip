@@ -14,19 +14,14 @@ ViatorChannelStripAudioProcessorEditor::ViatorChannelStripAudioProcessorEditor (
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
     groups.reserve(6);
+    groupTexts.reserve(6);
     
     for (int i = 0; i < groups.size(); i++) {
         addAndMakeVisible(groups[i]);
         groups[i]->setColour(0x1005400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
         groups[i]->setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
+        groups[i]->setText(groupTexts[i]);
     }
-    
-    group1.setText("Saturation");
-    group2.setText("Surgery");
-    group3.setText("VCA");
-    group4.setText("Color");
-    group5.setText("Something");
-    group6.setText("Something Again");
     
     //Making the window resizable by aspect ratio and setting size
     AudioProcessorEditor::setResizable(true, true);
