@@ -13,6 +13,10 @@
 ViatorChannelStripAudioProcessorEditor::ViatorChannelStripAudioProcessorEditor (ViatorChannelStripAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    shadowProperties.radius = 15;
+    shadowProperties.offset = juce::Point<int> (-2, 6);
+    dialShadow.setShadowProperties (shadowProperties);
+    
     groups.reserve(6);
     groupTexts.reserve(6);
     
@@ -22,6 +26,34 @@ ViatorChannelStripAudioProcessorEditor::ViatorChannelStripAudioProcessorEditor (
         groups[i]->setColour(0x1005410, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
         groups[i]->setText(groupTexts[i]);
     }
+    
+    //Saturation model chooser
+    addAndMakeVisible(saturationModelSlider);
+    saturationModelSlider.setRange(0, 4, 1);
+    saturationModelSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    saturationModelSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 64, 32);
+    saturationModelSlider.setColour(0x1001400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.0f));
+    saturationModelSlider.setColour(0x1001700, juce::Colour::fromFloatRGBA(1, 1, 1, 0.0f));
+    saturationModelSlider.setColour(0x1001500, juce::Colour::fromFloatRGBA(0, 0, 0, 0.0f));
+    saturationModelSlider.setLookAndFeel(&customDial);
+    saturationModelSlider.setComponentEffect(&dialShadow);
+    
+    //Drive slider
+    addAndMakeVisible(driveSlider);
+    driveSlider.setRange(0, 24, 0.5f);
+    driveSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    driveSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 64, 32);
+    driveSlider.setColour(0x1001400, juce::Colour::fromFloatRGBA(1, 1, 1, 0.0f));
+    driveSlider.setColour(0x1001700, juce::Colour::fromFloatRGBA(1, 1, 1, 0.0f));
+    driveSlider.setColour(0x1001500, juce::Colour::fromFloatRGBA(0, 0, 0, 0.0f));
+    driveSlider.setLookAndFeel(&customDial);
+    driveSlider.setComponentEffect(&dialShadow);
+    
+    //Drive label
+    addAndMakeVisible(driveLabel);
+    driveLabel.setText("Drive", juce::dontSendNotification);
+    driveLabel.setJustificationType(juce::Justification::centred);
+    driveLabel.attachToComponent(&driveSlider, false);
     
     //Making the window resizable by aspect ratio and setting size
     AudioProcessorEditor::setResizable(true, true);
@@ -76,4 +108,25 @@ void ViatorChannelStripAudioProcessorEditor::resized()
     juce::Rectangle<int> square6;
     square6.setBounds(square5.getX(), square5.getY() + square5.getHeight(), square5.getWidth(), square5.getHeight());
     group6.setBounds(square6.getX(), square6.getY(), square6.getWidth(), square6.getHeight());
+    
+    /*=========================================================================================================================================*/
+    
+    //Saturation flex box
+    juce::FlexBox saturationFlexBox;
+    saturationFlexBox.flexDirection = juce::FlexBox::Direction::row;
+    saturationFlexBox.flexWrap = juce::FlexBox::Wrap::noWrap;
+    saturationFlexBox.alignContent = juce::FlexBox::AlignContent::center;
+            
+    juce::Array<juce::FlexItem> saturationItemArray;
+    saturationItemArray.add(juce::FlexItem(square1.getWidth() * 0.65f, square1.getHeight() * 0.65f, saturationModelSlider).withMargin(juce::FlexItem::Margin(0, 0, 0, 0)));
+    saturationItemArray.add(juce::FlexItem(square1.getWidth() * 0.65f, square1.getHeight() * 0.65f, driveSlider).withMargin(juce::FlexItem::Margin(0, 0, 0, square1.getWidth() * -0.2)));
+            
+    saturationFlexBox.items = saturationItemArray;
+    saturationFlexBox.performLayout(square1.removeFromLeft(square1.getWidth()));
+    
+    if (AudioProcessorEditor::getWidth() < 830){
+        driveLabel.setColour(0x1000281, juce::Colour::fromFloatRGBA(1, 1, 1, 0.0f));
+    } else {
+        driveLabel.setColour(0x1000281, juce::Colour::fromFloatRGBA(1, 1, 1, 0.25f));
+    }
 }
